@@ -62,20 +62,18 @@ class BinarySearchTree {
     }
   };
 
-  minValue() {
-    let curr = this.root;
-    while (curr.left) {
-      curr = curr.left;
-    }
-    return curr.value;
+  minValue(root) {
+    if(root.left) {
+      return this.minValue(root.left)
+    } 
+    return root.value
   };
 
-  maxValue() {
-    let curr = this.root;
-    while (curr.right) {
-      curr = curr.right;
+  maxValue(root) {
+    if(root.right) {
+      return this.maxValue(root.right)
     }
-    return curr.value;
+    return root.value
   };
 
   deleteValue (value)  {
@@ -85,7 +83,7 @@ class BinarySearchTree {
   deleteKey(root, value){
     // Study this
     if (!root) {
-      return root;
+      return null;
     }
 
     if (value < root.value) {
@@ -128,5 +126,5 @@ function randomArrayGenerator() {
 const bst = new BinarySearchTree([10, 5, 3, 7, 15]);
 bst.buildTree()
 bst.insert(8)
-bst.deleteValue(15)
+bst.deleteValue(7)
 prettyPrint(bst.root);
