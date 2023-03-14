@@ -225,16 +225,12 @@ class BinarySearchTree {
     }
   }
 
-  // function to check if tree is height-balanced or not
   isBalanced(root) {
-    // Base condition
     if (root === null) return true;
 
-    // for left and right subtree height
     let lh = this.height(root.left);
     let rh = this.height(root.right);
 
-    // allowed values for (lh - rh) are 1, -1, 0
     if (
       Math.abs(lh - rh) <= 1 &&
       this.isBalanced(root.left) == true &&
@@ -242,8 +238,6 @@ class BinarySearchTree {
     )
       return true;
 
-    // if we reach here means tree is not
-    // height-balanced tree
     return false;
   }
 
@@ -262,7 +256,7 @@ class BinarySearchTree {
       if (current.data.right) queue.enqueue(current.data.right);
     }
 
-    this.buildTree(binaryArray)
+    this.buildTree(binaryArray);
   }
 }
 
@@ -284,12 +278,31 @@ function randomArrayGenerator() {
   return output;
 }
 
-
-const bst = new BinarySearchTree([10,5,3,7,15]);
-bst.buildTree(bst.arr)
-bst.insert(20)
-bst.insert(30)
-bst.insert(40)
-bst.reBalance(bst.root)
-
+const bst = new BinarySearchTree(randomArrayGenerator());
+bst.buildTree(bst.arr);
+console.log("Is balanced? ");
+console.log(bst.isBalanced(bst.root));
+console.log("Level Order =>");
+bst.levelOrder();
+console.log("======================");
+console.log("Pre order =>");
+bst.preOrder(bst.root);
+console.log("======================");
+console.log("In order =>");
+bst.inOrder(bst.root);
+console.log("======================");
+console.log("Post Order =>");
+bst.postOrder(bst.root);
+console.log("======================");
+console.log("Unbalancing the tree...");
+bst.insert(100);
+bst.insert(200);
+bst.insert(300);
+console.log("Is balanced? ");
+console.log(bst.isBalanced(bst.root));
+console.log("Balancing the tree...");
+bst.reBalance(bst.root);
+console.log("Is balanced? ");
+console.log(bst.isBalanced(bst.root));
+console.log("Prettier version of tree =>");
 prettyPrint(bst.root);
