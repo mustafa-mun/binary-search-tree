@@ -1,6 +1,6 @@
 class QueueNode {
-  constructor(value) {
-    this.value = value;
+  constructor(data) {
+    this.data = data;
     this.next = null;
   }
 }
@@ -26,10 +26,16 @@ class Queue {
 
   dequeue() {
     const curr = this.front;
-    const next = curr.next;
-    this.front = next;
-    this.size--
-    return curr.value;
+
+    if (this.size === 1) {
+      this.front = null;
+      this.tail = null;
+    } else {
+      const next = curr.next;
+      this.front = next;
+    }
+    this.size--;
+    return curr;
   }
 }
 
@@ -139,6 +145,61 @@ class BinarySearchTree {
     }
     return root;
   }
+
+  find(root, value) {
+    if (!root) return null;
+
+    if (root.value === value) return root;
+
+    if (value < root.value) {
+      return this.find(root.left, value);
+    } else {
+      return this.find(root.right, value);
+    }
+  }
+
+  levelOrder() {
+    // Breadth First Search
+    const queue = new Queue();
+    queue.enqueue(this.root);
+
+    while (queue.size) {
+      const current = queue.dequeue();
+      console.log(current.data.value);
+
+      if (current.data.left) {
+        queue.enqueue(current.data.left);
+      }
+
+      if (current.data.right) {
+        queue.enqueue(current.data.right);
+      }
+    }
+  }
+
+  preOrder(root) {
+    if (root) {
+      console.log(root.value);
+      this.preOrder(root.left);
+      this.preOrder(root.right);
+    }
+  }
+
+  inOrder(root) {
+    if (root) {
+      console.log(root.value);
+      this.inOrder(root.left);
+      this.inOrder(root.right);
+    }
+  }
+
+  postOrder(root) {
+    if (root) {
+      this.postOrder(root.left);
+      this.postOrder(root.right);
+      console.log(root.value);
+    }
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -160,7 +221,5 @@ function randomArrayGenerator() {
 }
 
 const bst = new BinarySearchTree([10, 5, 3, 7, 15]);
-// bst.buildTree();
-// bst.insert(8);
-// bst.deleteValue(7);
+bst.buildTree();
 // prettyPrint(bst.root);
