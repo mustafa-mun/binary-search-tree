@@ -47,7 +47,9 @@ class Node {
   }
 }
 
-let nodeHeight = -1;
+// this array is for reBalancing
+const binaryArray = [];
+
 class BinarySearchTree {
   sortAndRemoveDuplicates(array) {
     const set = new Set(array);
@@ -60,20 +62,20 @@ class BinarySearchTree {
     this.root = null;
   }
 
-  buildTree(start = 0, end = this.arr.length - 1) {
-    if (this.arr.length) {
+  buildTree(array, start = 0, end = array.length - 1) {
+    if (array.length) {
       if (start > end) {
         return null;
       } else {
         const mid = Math.floor((start + end) / 2);
-        const node = new Node(this.arr[mid]);
-        node.left = this.buildTree(start, mid - 1);
-        node.right = this.buildTree(mid + 1, end);
+        const node = new Node(array[mid]);
+        node.left = this.buildTree(array, start, mid - 1);
+        node.right = this.buildTree(array, mid + 1, end);
         this.root = node;
         return node;
       }
     } else {
-      throw new Error("Tree needs an Array!");
+      return array;
     }
   }
 
@@ -222,6 +224,46 @@ class BinarySearchTree {
       return this.depth(root.right, node, (count += 1));
     }
   }
+
+  // function to check if tree is height-balanced or not
+  isBalanced(root) {
+    // Base condition
+    if (root === null) return true;
+
+    // for left and right subtree height
+    let lh = this.height(root.left);
+    let rh = this.height(root.right);
+
+    // allowed values for (lh - rh) are 1, -1, 0
+    if (
+      Math.abs(lh - rh) <= 1 &&
+      this.isBalanced(root.left) == true &&
+      this.isBalanced(root.right) == true
+    )
+      return true;
+
+    // if we reach here means tree is not
+    // height-balanced tree
+    return false;
+  }
+
+  reBalance(root) {
+    if (this.isBalanced(root)) {
+      return "Already Balanced";
+    }
+
+    const queue = new Queue();
+    queue.enqueue(root);
+
+    while (queue.size) {
+      const current = queue.dequeue();
+      binaryArray.push(current.data.value);
+      if (current.data.left) queue.enqueue(current.data.left);
+      if (current.data.right) queue.enqueue(current.data.right);
+    }
+
+    this.buildTree(binaryArray)
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -242,6 +284,12 @@ function randomArrayGenerator() {
   return output;
 }
 
-const bst = new BinarySearchTree([10, 5, 3, 7, 15]);
-bst.buildTree();
+
+const bst = new BinarySearchTree([10,5,3,7,15]);
+bst.buildTree(bst.arr)
+bst.insert(20)
+bst.insert(30)
+bst.insert(40)
+bst.reBalance(bst.root)
+
 prettyPrint(bst.root);
