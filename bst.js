@@ -1,3 +1,38 @@
+class QueueNode {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+// I am implementing linked list queue for less time complexity on BFS (Rather than using array)
+class Queue {
+  constructor() {
+    this.front = null;
+    this.tail = null;
+    this.size = 0;
+  }
+
+  enqueue(value) {
+    const newNode = new QueueNode(value);
+    if (!this.size) {
+      this.front = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+    this.size++;
+  }
+
+  dequeue() {
+    const curr = this.front;
+    const next = curr.next;
+    this.front = next;
+    this.size--
+    return curr.value;
+  }
+}
+
 class Node {
   constructor(value) {
     this.value = value;
@@ -36,15 +71,15 @@ class BinarySearchTree {
   }
 
   insert(value) {
-    const node = new Node(value)
-    if(!this.root) {
-      this.root = node
+    const node = new Node(value);
+    if (!this.root) {
+      this.root = node;
     } else {
-      this.insertValue(this.root, value)
+      this.insertValue(this.root, value);
     }
   }
 
-  insertValue (root, value)  {
+  insertValue(root, value) {
     const newNode = new Node(value);
 
     if (value < root.value) {
@@ -60,36 +95,38 @@ class BinarySearchTree {
         this.insertValue(root.right, value);
       }
     }
-  };
+  }
 
   minValue(root) {
-    if(root.left) {
-      return this.minValue(root.left)
-    } 
-    return root.value
-  };
+    if (root.left) {
+      return this.minValue(root.left);
+    }
+    return root.value;
+  }
 
   maxValue(root) {
-    if(root.right) {
-      return this.maxValue(root.right)
+    if (root.right) {
+      return this.maxValue(root.right);
     }
-    return root.value
-  };
+    return root.value;
+  }
 
-  deleteValue (value)  {
+  deleteValue(value) {
     this.root = this.deleteKey(this.root, value);
-  };
+  }
 
-  deleteKey(root, value){
+  deleteKey(root, value) {
     // Study this
     if (!root) {
       return null;
     }
 
+    //This section is for finding the node with our value
     if (value < root.value) {
       root.left = this.deleteKey(root.left, value);
     } else if (value > root.value) {
       root.right = this.deleteKey(root.right, value);
+      //This else is for after the finding the node with our value
     } else {
       if (!root.left) {
         return root.right;
@@ -101,7 +138,7 @@ class BinarySearchTree {
       root.right = this.deleteKey(root.right, root.value);
     }
     return root;
-  };
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -114,7 +151,6 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-
 function randomArrayGenerator() {
   const output = [];
   for (let i = 0; i < 8; i++) {
@@ -124,7 +160,7 @@ function randomArrayGenerator() {
 }
 
 const bst = new BinarySearchTree([10, 5, 3, 7, 15]);
-bst.buildTree()
-bst.insert(8)
-bst.deleteValue(7)
-prettyPrint(bst.root);
+// bst.buildTree();
+// bst.insert(8);
+// bst.deleteValue(7);
+// prettyPrint(bst.root);
