@@ -47,6 +47,7 @@ class Node {
   }
 }
 
+let nodeHeight = -1;
 class BinarySearchTree {
   sortAndRemoveDuplicates(array) {
     const set = new Set(array);
@@ -200,6 +201,27 @@ class BinarySearchTree {
       console.log(root.value);
     }
   }
+
+  height(root) {
+    if (!root) return -1;
+
+    const leftHeight = this.height(root.left);
+    const rightHeight = this.height(root.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  depth(root, node, count = 0) {
+    if (!root) return null;
+
+    if (root === node) return count;
+
+    if (root.value > node.value) {
+      return this.depth(root.left, node, (count += 1));
+    } else {
+      return this.depth(root.right, node, (count += 1));
+    }
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -222,4 +244,4 @@ function randomArrayGenerator() {
 
 const bst = new BinarySearchTree([10, 5, 3, 7, 15]);
 bst.buildTree();
-// prettyPrint(bst.root);
+prettyPrint(bst.root);
